@@ -18,7 +18,7 @@
 
 <div class="container-fluid" id ="smallHeader">
 <div class="row container-fluid" >
-    <div class="col-sm-3" style="background-color:gray; height: 100%;">
+    <div class="col-sm-3" style="background-color:darkslategray; height: 100% color=white;">
       
         <%- include('question.ejs') %>
       
@@ -46,6 +46,9 @@
                 
                   
                 </div>
+                <div id="menu1" class="">
+                  <%- include('chat.ejs') %>
+                  </div>
                 
               </div> 
 
@@ -55,7 +58,7 @@
         </div>
     </div>
 
-    <div class="col-sm-3" >
+    <div class="col-sm-3" style="height: 100% ; background-color: darkslategray;">
        Video and audio chats.    
        <%- include('chat.ejs') %>
     
