@@ -35,8 +35,10 @@
 
   function drawLine(x0, y0, x1, y1, color, emit){
     context.beginPath();
-    context.moveTo(x0, y0);
-    context.lineTo(x1, y1);
+    var fixv=252;
+    var fixh=459;
+    context.moveTo(x0-fixh, y0-fixv);
+    context.lineTo(x1-fixh, y1-fixv);
     context.strokeStyle = color;
     context.lineWidth = 2;
     context.stroke();
