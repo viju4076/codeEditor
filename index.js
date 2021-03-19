@@ -60,6 +60,14 @@ app.get('/:room/candidate',(req,res)=>{
 });
 
 
+
+function onConnection(socket){
+    socket.on('drawing', (data) => socket.broadcast.emit('drawing', data));
+  }
+  
+  io.on('connection', onConnection);
+
+
 io.on('connection',socket=>{
     
    
@@ -104,25 +112,29 @@ io.on('connection',socket=>{
                 program.language=currentLanguage;
                 program.stdin=input_code.input;
                   request({
-               url: 'https://api.jdoodle.com/v1/execute',
-            method: "POST",
-                json: program
+                           url: 'https://api.jdoodle.com/v1/execute',
+                           method: "POST",
+                           json: program
    
-},
-function (error, response, body) {
-   
-    console.log('error:', error);
-    console.log('statusCode:', response && response.statusCode);
-    console.log('body:', body);
-    socket.emit('codeResult',body);
-   // result.textContent=body;
-   io.to(roomId).emit('codeResult',body);
-});
+                            },
+                            function (error, response, body) {
+                            
+                                console.log('error:', error);
+                                console.log('statusCode:', response && response.statusCode);
+                                console.log('body:', body);
+                                socket.emit('codeResult',body);
+                            // result.textContent=body;
+                            io.to(roomId).emit('codeResult',body);
+                          });
 
 
 
 
             })
+
+
+            socket.on('drawing', (data) => socket.to(roomId).emit('drawing', data));
+
     })
 })
 
