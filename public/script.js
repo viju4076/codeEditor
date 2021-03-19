@@ -181,11 +181,14 @@ function transmitCode(){
     socket.emit('editor-change',{text : editor.getValue()})
 }
 
-{}
+
+
+
+
 //chat section 
 
 var message = document.getElementById('message'),
-handle = document.getElementById('handle'),
+
 btn = document.getElementById('send'),
 output = document.getElementById('output'),
 feedback=document.getElementById('feedback');
@@ -194,13 +197,13 @@ feedback=document.getElementById('feedback');
 btn.addEventListener('click',function(){
 socket.emit('chat', {
   message: message.value,
-  handle: handle.value
+  handle: USER
 });
 
 message.value="";
 });
 message.addEventListener('keypress',function(){
-socket.emit('typing',handle.value);
+socket.emit('typing',USER);
 });
 
 socket.on('chat', function(data){
