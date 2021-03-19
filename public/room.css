@@ -134,4 +134,8 @@ input{
     padding: 12px 0;
     width: 100%;
     border-radius: 0 0 2px 2px;
+}
+.quespara::first-line{
+    font-weight: bold;
 }   
+
