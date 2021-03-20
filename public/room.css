@@ -1,6 +1,7 @@
 body{
     background-color: rgba(0, 0, 0, 0.822);
-    cursor:url(http://www.javascriptkit.com/dhtmltutors/cursor-hand.gif), auto;
+    /* cursor:url(http://www.javascriptkit.com/dhtmltutors/cursor-hand.gif), auto; */
+    cursor: pointer;
 }
 
 #heading{

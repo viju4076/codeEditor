@@ -4,6 +4,7 @@ console.log(editor.getValue())
 
 var language;
 document.getElementById('editor').style.fontSize='20px';
+
 //document.getElementById('language').selectedIndex=4;
 var submit=document.getElementById('submit_button');
 var result=document.getElementById('resultBox');
