@@ -5,10 +5,10 @@ console.log(editor.getValue())
 var language;
 document.getElementById('editor').style.fontSize='20px';
 //document.getElementById('language').selectedIndex=4;
-var submit=document.getElementById('submit');
-var result=document.getElementById('result');
-var details=document.getElementById('details');
-var inputs=document.getElementById('input');
+var submit=document.getElementById('submit_button');
+var result=document.getElementById('resultBox');
+var details=document.getElementById('detailBox');
+var inputs=document.getElementById('inputBox');
 const boilerplate={
     cpp14:"#include<bits/stdc++.h>\nusing namespace std;\nint main()\n{\n    cout<<\"hello \\n\";\n}",
     cpp17:"#include<bits/stdc++.h>\nusing namespace std;\nint main()\n{\n    cout<<\"hello \\n\";\n}",
@@ -79,6 +79,67 @@ function setLanguage(language)
 setLanguage('C');
 setLanguage('C++14');
 
+function input_button()
+{
+  document.getElementById('editor').style.height='1160%';
+    var x=document.getElementById('input_output');
+    x.style.top='900%';
+    setTimeout(function() {
+        var y=document.getElementById('inputBox');
+        y.style.visibility='visible';
+         document.getElementById('close_button').style.visibility='visible';
+
+        
+      }, 500);
+    
+    
+
+}
+function output_button()
+{
+    var x=document.getElementById('input_output');
+    x.style.top='900%';
+    setTimeout(function() {
+        var y=document.getElementById('resultBox');
+        y.style.visibility='visible';
+        document.getElementById('close_button').style.visibility='visible';
+        
+      }, 500);
+    
+    
+
+}
+function details_button()
+{
+    var x=document.getElementById('input_output');
+    x.style.top='900%';
+    setTimeout(function() {
+        var y=document.getElementById('detailBox');
+        y.style.visibility='visible';
+        document.getElementById('close_button').style.visibility='visible';
+        
+      }, 500);
+    
+    
+
+}
+
+function navClick()
+{
+  setTimeout(function() {
+    document.getElementById('input_output').style.top='1200%';
+    document.getElementById('close_button').style.visibility='hidden';
+    document.getElementById('detailBox').style.visibility='hidden';
+    document.getElementById('inputBox').style.visibility='hidden';
+    document.getElementById('resultBox').style.visibility='hidden';
+    
+
+    
+  }, 500);
+
+  
+
+}
 
 function languageChange(){
     language=document.getElementById('language').value;
@@ -89,7 +150,7 @@ function languageChange(){
 }
 function inputChange(){
     console.log('change ho rha');
-    var input=document.getElementById('input').value;
+    var input=document.getElementById('inputBox').value;
    // console.log(input);
     socket.emit('inputChange',input);
     
@@ -102,7 +163,7 @@ submit.addEventListener('click',function()
     //console.log(code);
   var text=JSON.stringify(code);
   //console.log(text);
-  text=document.getElementById('input').value;
+  text=document.getElementById('inputBox').value;
  //text=JSON.stringify(text);
  //socket.emit('codeSubmit','submit'); 
  socket.emit('submitCode',{"input":text,"code":code});
@@ -145,7 +206,7 @@ socket.on('editor-change', code=>{
 // })
 socket.on('inputChange',input=>{
   //  console.log('socket me aaya');
-        document.getElementById('input').value=input;
+        document.getElementById('inputBox').value=input;
 })
 
 socket.on('selectIndex',language=>{
@@ -169,7 +230,8 @@ socket.on('codeResult',response=>{
  var cpuTime=response.cpuTime;
 
     result.textContent=output;
-    details.textContent="Status Code :"+statusCode+"\nMemory :"+memory+"\nCpuTime :"+cpuTime;  
+    details.textContent="Status Code :"+statusCode+"\r\n"+"Memory :"+memory+'\r\n'+"CpuTime :"+cpuTime; 
+     
     
  console.log(response);
 

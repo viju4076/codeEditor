@@ -1,4 +1,8 @@
 <%- include('header.ejs') %>
+
+<!-- ..................navbar.................................. -->
+
+
 <div class="header">
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
@@ -10,15 +14,16 @@
         <%=user %>
       </a>
       </li>
-      <span class="float-right"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-        Invite
-      </button></span>
+      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal" style="position: absolute; right: 1%; top:18%">
+       + Invite
+      </button>
              
 
     </ul>
   </div>
 </nav>
 </div>
+        <!-- ...................................................... -->
 
 
 <!-- The Modal -->
@@ -28,13 +33,13 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Modal Heading</h4>
-        <button type="button"  class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="font-weight: bold;">Link</h4>
+        <button type="button"  class="close" data-dismiss="modal"></button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-        Modal body..
+        localhost:8080/<%=roomId%>
       </div>
 
       <!-- Modal footer -->
@@ -46,15 +51,16 @@
   </div>
 </div>
 
+<!-- .............question tab + compiler tab + chats........................................ -->
 
 <div class="container-fluid" id ="smallHeader">
 <div class="row container-fluid" >
-    <div class="col-sm-3" style="background-color:darkslategray; height: 100% color=white;">
+    <div class="col-sm-3" style="background-color:rgba(0, 0, 0, 0.384); height: 100% color=white;">
       
         <%- include('question.ejs') %>
       
     </div>
-    <div class="col-sm-6" style="background-color:darkslategray;">
+    <div class="col-sm-6" style="background-color:rgba(0, 0, 0, 0.384)">
     
         <div>
             <ul class="nav nav-tabs">
@@ -77,12 +83,7 @@
                 
                   
                 </div>
-                <div id="menu1" class="">
-                    <div class="row">
-                      <%- include('chat.ejs') %>
-                    </div>
-                     
-                  </div>
+                
                   </div>
                 
               </div> 
@@ -90,7 +91,10 @@
 
 
 
-        </div>
+        
+    </div>
+    <div class="col-sm-3" style="background-color:darkslategray;">
+      <%- include('chat.ejs') %>
     </div>
 
     
