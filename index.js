@@ -17,6 +17,7 @@ var program = {
         stdin:""
   
 };
+
 // request({
 //     url: 'https://api.jdoodle.com/v1/execute',
 //     method: "POST",
@@ -73,14 +74,16 @@ io.on('connection',socket=>{
             // socket.on('disconnect',()=>{
             //     socket.to(roomId).emit('user-disconnected',userid)
             // });
-            socket.on('chat', function(data){
+            //console.log(user);
+            
+            socket.on('codeboard-message', function(data){
                 // console.log(data);
-                io.sockets.to(roomId).emit('chat', data);
+                socket.broadcast.to(roomId).emit('message-from-others', data);
                 //console.log(data);
             })
-            socket.on('typing', function(data){
-                socket.broadcast.emit('typing', data);
-            });
+             
+            
+           
 
             socket.on('editor-change',(code)=>{
                 //console.log(code)
