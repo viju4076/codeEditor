@@ -3,7 +3,7 @@ const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const {v4:uuidV4} = require('uuid')
-
+var fs=require('fs')
 var request = require('request');
 var currentLanguage='cpp14';
 
@@ -53,7 +53,8 @@ app.get('/:room',(req,res)=>{
 })
 
 app.get('/:room/interviewer',(req,res)=>{
-    res.render('front',{roomId:req.params.room, user:'Interviewer'});
+    var ques=''+fs.readFileSync('./problems_db/implementation/p1');
+    res.render('front',{roomId:req.params.room, user:'Interviewer',quesDes:ques});
 
 })
 app.get('/:room/candidate',(req,res)=>{
@@ -61,12 +62,13 @@ app.get('/:room/candidate',(req,res)=>{
 });
 
 
+
 io.on('connection',socket=>{
     
    
 
     socket.on('join-room',(roomId)=>{
-         //   console.log("user:"+userid+ " room:"+roomId +"socket id: "+socket.id)
+        //  console.log("room:"+roomId +"socket id: "+socket.id)
             socket.join(roomId);
             socket.to(roomId).emit('user-connected','userConnected');
             // socket.on('disconnect',()=>{

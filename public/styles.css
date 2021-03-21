@@ -1,4 +1,4 @@
-** {
+* {
 	font-family: sans-serif;
 	margin: 0;
 	padding: 0;
@@ -6,7 +6,7 @@
 
 .header-area {
 	height: 6%;
-	background: darkslategray;
+	background: rgba(5, 5, 5, 0.712);;
 	box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.2), 0 0 1rem rgba(0, 0, 0, 0.2);
 	color: white;
 	padding: 4px;
@@ -18,6 +18,7 @@
 	padding: 3px;
 	max-height:120px;
 	overflow: auto;
+	background-color:  rgba(5, 5, 5, 0.712);
 }
 ::-webkit-scrollbar { 
     display: none; 
@@ -30,7 +31,7 @@
 
 .typing-box {
 	width: 75%;
-	height: 90%;
+	height: 96%;
 	resize: none;
 	padding: 3px;
 }
@@ -38,7 +39,7 @@
 .send-button {
 	border: 0;
 	width: 25%;
-	background: darkslategray;
+	background: rgba(5, 5, 5, 0.712);;
 	color: white;
 	padding: 8px;
 	font-size: 18px;
@@ -49,6 +50,8 @@
 .message-box {
 	margin-top: 10px;
 	overflow: auto;
+	background-color:  rgba(5, 5, 5, 0.712);;
+	
 	
 }
 
@@ -57,7 +60,7 @@
 
 .my-message-box {
 	text-align: right;
-	background: white;
+	background:  rgba(5, 5, 5, 0.712);;
 }
 
 .message {
@@ -83,16 +86,3 @@
 	height: 8px;
 	float: left;
 }
-
-            #chat{
-               width: 300px;
-                position: absolute;
-                left:800px;
-                top:520px;
-              
-               max-height: 150px;
-                box-shadow: 1px 3px 5px rgba(0,0,0,0.05);
-                border-radius: 2px;
-                
-                
-            }
