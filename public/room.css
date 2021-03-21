@@ -187,3 +187,12 @@ body{
   .chooseLanguage select option {
     padding: 8%;
   }
+
+
+  #chat{
+    position: absolute;
+   left: 40px;
+   top:350px;
+    width: 300px;
+    height: 300px;
+} 
