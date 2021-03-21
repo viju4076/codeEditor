@@ -1,5 +1,6 @@
 const socket = io('/')
-
+console.log(ROOM_ID);
+console.log(document.getElementById('user').innerText);
 console.log(editor.getValue())
 
 var language;
@@ -127,6 +128,8 @@ document.addEventListener('keyup', function(event) {
 
 
 socket.emit('join-room',ROOM_ID)
+
+
     
 socket.on('user-connected',msg=>{
         transmitCode();
@@ -184,34 +187,48 @@ function transmitCode(){
 {}
 //chat section 
 
-var message = document.getElementById('message'),
-handle = document.getElementById('handle'),
-btn = document.getElementById('send'),
-output = document.getElementById('output'),
-feedback=document.getElementById('feedback');
+var message = document.getElementById('typing-box'),
+user=document.getElementById('user').innerText,
+btn = document.getElementById('send')
+;
 
 
-btn.addEventListener('click',function(){
-socket.emit('chat', {
-  message: message.value,
-  handle: handle.value
-});
+socket.on('message-from-others', function(data){
+  
+  var html = '<div class="message-box others-message-box">' +
+        '<div class="message others-message"> <strong>'+data.user+':</strong> ' + data.message + ' </div>' +
+        '<div class="separator"></div>' +
+      '</div>';
+  
+      
+  document.getElementById("message-area").innerHTML += html;
+})
 
-message.value="";
-});
-message.addEventListener('keypress',function(){
-socket.emit('typing',handle.value);
-});
 
-socket.on('chat', function(data){
-feedback.innerHTML="";
-output.innerHTML += '<p><strong>' + data.handle + ': </strong>' + data.message + '</p>';
 
-}); 
+function sendMessage() {
+  var message = document.getElementById("typing-box").value;
+  if(message!="")
+  {
+  var html = '<div class="message-box my-message-box">' +
+          '<div class="message my-message"> <strong>'+user+':</strong> ' + message + ' </div>' +
+          '<div class="separator"></div>' +
+        '</div>';
+        
+  document.getElementById("message-area").innerHTML += html;
+  document.getElementById("typing-box").value = "";
+  
+  socket.emit('codeboard-message', {
+    message: message,
+    user: user
+   }
+    );
+  }
+}
 
-socket.on('typing', function(data){
-feedback.innerHTML = '<p><em>' + data + ' is typing a message...</em></p>';
-});
+
+
+
 //chat end
 
 

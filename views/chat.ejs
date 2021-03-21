@@ -3,21 +3,35 @@
         <script src="script.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript" charset="utf-8"></script>
    
-        
-       
-       
-
+        <link rel="stylesheet" href="/styles.css">
        <div id="chat">
-           <h2>Type something...</h2>
-           <div id="chat-window">
-            <div id="output"></div>
-            <div id="feedback"></div>
-             </div>
-               <input id="handle" type="text" placeholder="Handle" />
-               <input id="message" type="text" placeholder="Message" />
-               <button id="send">Send</button>
+        
+        <div class="header-area">
+          <h5> Message box </h5>
+        </div>
+        <div class="message-area1">
+        <div class="message-area" id="message-area">
+          <!--<div class="message-box others-message-box">
+            <div class="message others-message" id="output-i"> Hi, How are you? </div>
+            <div class="separator"></div>
+          </div>
+          
+          <div class="message-box my-message-box">
+            <div class="message my-message"> I am good, how are you doing? </div>
+            <div class="separator"></div>
+          </div> -->
+        </div> 
+        
+        <div class="typing-area">
+          <textarea class="typing-box" id="typing-box"></textarea>
+          <button class="send-button" id="send" onclick="sendMessage()"> Send </button>
+        </div>
+      </div>
+        
+        
+       </div>
 
-              </div>
+       
         
  <%- include('footer.ejs') %>
             
