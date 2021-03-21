@@ -225,6 +225,27 @@ socket.on('selectIndex',language=>{
   }
     
 });
+$(".dropdown-menu li a").click(function(){
+  var selText = $(this).text();///User selected value...****
+  swal("Want To Change Question", {
+    buttons: {
+      cancel: "No",
+      Yes: true,
+    },
+  })
+  .then((value) => {
+    switch (value) {
+   
+      case "Yes":
+        socket.emit('category',selText);
+  document.getElementById('quesSec').innerHTML="";
+        break;
+      default:
+        break;
+    }
+  });
+  
+});
 
 socket.on('codeResult',response=>{
  var content=response;
@@ -239,6 +260,14 @@ socket.on('codeResult',response=>{
     
  console.log(response);
 
+})
+socket.on('changeQues',ques=>{
+  console.log(ques);
+  document.getElementById('quesSec').innerText=ques;
+  $("pre").each(function(){
+    $(this).html($(this).html().replace(/input/g,"<span class='green'>INPUT</span>"));
+    $(this).html($(this).html().replace(/output/g,"<span class='red'>OUTPUT</span>"));
+});
 })
 
 
