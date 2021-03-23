@@ -67,7 +67,7 @@ app.get('/:room/candidate',(req,res)=>{
 io.on('connection',socket=>{
     
    
-    console.log('hello');
+   // console.log('hello');
     socket.on('join-room',(roomId)=>{
             console.log("room:"+roomId +"socket id: "+socket.id)
             socket.join(roomId);
@@ -87,14 +87,14 @@ io.on('connection',socket=>{
                 console.log('hello');
                 var num=Math.floor((Math.random() * 2) + 1);
                 var ques=''+fs.readFileSync('./problems_db/'+selText+'/p'+num);
-                console.log
+             //   console.log
                 socket.to(roomId).emit('changeQues',ques);
                 io.to(roomId).emit('changeQues',ques);
             })
            
 
             socket.on('editor-change',(code)=>{
-                console.log(code)
+               // console.log(code)
                  socket.to(roomId).emit('editor-change',code)
             })
             socket.on('inputChange',(input)=>{
