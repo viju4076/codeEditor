@@ -58,7 +58,8 @@ app.get('/:room/interviewer',(req,res)=>{
 
 })
 app.get('/:room/candidate',(req,res)=>{
-    res.render('front',{roomId:req.params.room,user:'Candidate'})
+    var ques=''+fs.readFileSync('./problems_db/implementation/p1');
+    res.render('front',{roomId:req.params.room,user:'Candidate',quesDes:ques})
 });
 
 
