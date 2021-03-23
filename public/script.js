@@ -11,6 +11,7 @@ var submit=document.getElementById('submit_button');
 var result=document.getElementById('resultBox');
 var details=document.getElementById('detailBox');
 var inputs=document.getElementById('inputBox');
+var categories_ques=document.getElementById('categories_ques');
 const boilerplate={
     cpp14:"#include<bits/stdc++.h>\nusing namespace std;\nint main()\n{\n    cout<<\"hello \\n\";\n}",
     cpp17:"#include<bits/stdc++.h>\nusing namespace std;\nint main()\n{\n    cout<<\"hello \\n\";\n}",
@@ -33,7 +34,12 @@ document.getElementById('language').click(function(event){
        
 });
 
+//for showing question categories to interviewer only.
 
+if(USER==="Candidate")
+{
+  categories_ques.style.visibility="hidden";
+}
 
 function setLanguage(language)
 {

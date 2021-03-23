@@ -67,9 +67,9 @@ app.get('/:room/candidate',(req,res)=>{
 io.on('connection',socket=>{
     
    
-    console.log('hello');
+    //console.log('hello');
     socket.on('join-room',(roomId)=>{
-            console.log("room:"+roomId +"socket id: "+socket.id)
+           // console.log("room:"+roomId +"socket id: "+socket.id)
             socket.join(roomId);
             socket.to(roomId).emit('user-connected','userConnected');
             // socket.on('disconnect',()=>{
@@ -84,17 +84,17 @@ io.on('connection',socket=>{
             })
              
             socket.on('category',(selText)=>{
-                console.log('hello');
+                //console.log('hello');
                 var num=Math.floor((Math.random() * 2) + 1);
                 var ques=''+fs.readFileSync('./problems_db/'+selText+'/p'+num);
-                console.log
+                //console.log
                 socket.to(roomId).emit('changeQues',ques);
                 io.to(roomId).emit('changeQues',ques);
             })
            
 
             socket.on('editor-change',(code)=>{
-                console.log(code)
+                
                  socket.to(roomId).emit('editor-change',code)
             })
             socket.on('inputChange',(input)=>{
@@ -112,7 +112,8 @@ io.on('connection',socket=>{
             //     socket.to(roomId).emit('codeSubmit',msg)
             // })
             socket.on('submitCode',(input_code)=>{
-                console.log(input_code);
+              //  console.log(input_code);
+              console.log(input_code.code);
                 program.script=input_code.code;
                 program.language=currentLanguage;
                 program.stdin=input_code.input;
