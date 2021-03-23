@@ -53,12 +53,12 @@ app.get('/:room',(req,res)=>{
 })
 
 app.get('/:room/interviewer',(req,res)=>{
-    var ques=''+fs.readFileSync('./problems_db/implementation/p1');
+    var ques=''+fs.readFileSync('./problems_db/Implementation/p1');
     res.render('front',{roomId:req.params.room, user:'Interviewer',quesDes:ques});
 
 })
 app.get('/:room/candidate',(req,res)=>{
-    var ques=''+fs.readFileSync('./problems_db/implementation/p1');
+    var ques='';
     res.render('front',{roomId:req.params.room,user:'Candidate',quesDes:ques})
 });
 
@@ -67,9 +67,9 @@ app.get('/:room/candidate',(req,res)=>{
 io.on('connection',socket=>{
     
    
-
+    console.log('hello');
     socket.on('join-room',(roomId)=>{
-        //  console.log("room:"+roomId +"socket id: "+socket.id)
+            console.log("room:"+roomId +"socket id: "+socket.id)
             socket.join(roomId);
             socket.to(roomId).emit('user-connected','userConnected');
             // socket.on('disconnect',()=>{
@@ -83,11 +83,18 @@ io.on('connection',socket=>{
                 //console.log(data);
             })
              
-            
+            socket.on('category',(selText)=>{
+                console.log('hello');
+                var num=Math.floor((Math.random() * 2) + 1);
+                var ques=''+fs.readFileSync('./problems_db/'+selText+'/p'+num);
+                console.log
+                socket.to(roomId).emit('changeQues',ques);
+                io.to(roomId).emit('changeQues',ques);
+            })
            
 
             socket.on('editor-change',(code)=>{
-                //console.log(code)
+                console.log(code)
                  socket.to(roomId).emit('editor-change',code)
             })
             socket.on('inputChange',(input)=>{
@@ -128,10 +135,10 @@ function (error, response, body) {
 
 
 
+
             })
     })
 })
-
 server.listen(8080) 
 
 
