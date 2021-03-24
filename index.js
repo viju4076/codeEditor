@@ -67,7 +67,7 @@ app.get('/:room/candidate',(req,res)=>{
 io.on('connection',socket=>{
     
    
-    console.log('hello');
+   // console.log('hello');
     socket.on('join-room',(roomId)=>{
             console.log("room:"+roomId +"socket id: "+socket.id)
             socket.join(roomId);
@@ -90,7 +90,7 @@ io.on('connection',socket=>{
            
 
             socket.on('editor-change',(code)=>{
-                console.log(code)
+               // console.log(code)
                  socket.to(roomId).emit('editor-change',code)
             })
             socket.on('inputChange',(input)=>{
