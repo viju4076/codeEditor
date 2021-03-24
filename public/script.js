@@ -225,7 +225,9 @@ socket.on('selectIndex',language=>{
   }
     
 });
-$(".dropdown-menu li a").click(function(){
+$(".dropdown-menu li a").on('click',function(){
+  var tabId=$(this).parents('div.tab-pane').attr('id');
+  console.log('i m here'+tabId);
   var selText = $(this).text();///User selected value...****
   swal("Want To Change Question", {
     buttons: {
@@ -237,8 +239,9 @@ $(".dropdown-menu li a").click(function(){
     switch (value) {
    
       case "Yes":
-        socket.emit('category',selText);
-  document.getElementById('quesSec').innerHTML="";
+        tabId='quesSec'+tabId[8];
+        socket.emit('category',selText,tabId);
+  document.getElementById(tabId).innerHTML="";
         break;
       default:
         break;
@@ -261,16 +264,88 @@ socket.on('codeResult',response=>{
  console.log(response);
 
 })
-socket.on('changeQues',ques=>{
+socket.on('changeQues',(ques,tabId)=>{
   console.log(ques);
-  document.getElementById('quesSec').innerText=ques;
+  document.getElementById(tabId).innerText=ques;
   $("pre").each(function(){
     $(this).html($(this).html().replace(/input/g,"<span class='green'>INPUT</span>"));
     $(this).html($(this).html().replace(/output/g,"<span class='red'>OUTPUT</span>"));
 });
 })
 
+$(document).ready(function() {
+    // var tabs = $("#container-1").tabs();
+    // var tabCounter = 1;
+    $("#questabs").on('click','.dropdown-menu li a',function(){
+      var tabId=$(this).parents('div.tab-pane').attr('id');
+      console.log('i m here'+tabId);
+      var selText = $(this).text();///User selected value...****
+      swal("Want To Change Question", {
+        buttons: {
+          cancel: "No",
+          Yes: true,
+        },
+      })
+      .then((value) => {
+        switch (value) {
+       
+          case "Yes":
+            tabId='quesSec'+tabId[8];
+            socket.emit('category',selText,tabId);
+      document.getElementById(tabId).innerHTML="";
+            break;
+          default:
+            break;
+        }
+      });
+      
+    });
+    $("pre").each(function(){
+      $(this).html($(this).html().replace(/input/g,"<span class='green'>INPUT</span>"));
+      $(this).html($(this).html().replace(/output/g,"<span class='red'>OUTPUT</span>"));
+  });
+    $('#add_tab').click( function(){
+       socket.emit('add_ques_tab');
+    });
+}); 
 
+socket.on('add_ques_tab_event',function(){
+  var current_idx = $("#ex1 li").length + 1;
+        console.log(current_idx);
+        $("#ex1").append("<li>"+
+        "<a "+
+          "id='ex1-tab-"+current_idx+"'"+
+          "data-toggle='tab'"+
+          "href='#question"+current_idx+"'"+
+          "style='background-color: grey;'"+
+          "><span style='color: white;'>Question-"+current_idx+"</span></a"+
+        ">"+
+      "</li>");
+      var str='';
+      if(user==="Interviewer")
+      str='<div style="width: 100%;" class="text-left">'+
+      '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+      'Categories <span class="caret"></span>'+
+      '</button>'+
+      '<ul class="dropdown-menu">'+
+                 '<li><a href="#">Implementation</a></li>'+
+                 '<li><a href="#">Dynamic Programming</a></li>'+
+                 '<li><a href="#">Graphs</a></li>'+
+               '</ul>'+
+             '</div>'
+      $("#questabs").append('<div  class="tab-pane fade"  id="question'+current_idx+'" >'+
+      '<div class="row" style="display: flex; padding: 12px; margin-top: 12px;">'+
+           str+
+       '</div>'+
+       '<div>'+
+           '<p>'+
+               '<pre id="quesSec'+current_idx+'">'+
+               'You can add a question here'+
+               '</pre>'+     
+           '</p>'+
+       '</div>'+
+'</div>')
+})
 function transmitCode(){
     console.log("called")
     socket.emit('editor-change',{text : editor.getValue()})

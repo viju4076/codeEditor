@@ -53,12 +53,12 @@ app.get('/:room',(req,res)=>{
 })
 
 app.get('/:room/interviewer',(req,res)=>{
-    var ques=''+fs.readFileSync('./problems_db/Implementation/p1');
+    var ques='You can add a question here'
     res.render('front',{roomId:req.params.room, user:'Interviewer',quesDes:ques});
 
 })
 app.get('/:room/candidate',(req,res)=>{
-    var ques='';
+    var ques='Wait until interviewer assigns you a question';
     res.render('front',{roomId:req.params.room,user:'Candidate',quesDes:ques})
 });
 
@@ -72,10 +72,6 @@ io.on('connection',socket=>{
             console.log("room:"+roomId +"socket id: "+socket.id)
             socket.join(roomId);
             socket.to(roomId).emit('user-connected','userConnected');
-            // socket.on('disconnect',()=>{
-            //     socket.to(roomId).emit('user-disconnected',userid)
-            // });
-            //console.log(user);
             
             socket.on('codeboard-message', function(data){
                 // console.log(data);
@@ -83,13 +79,13 @@ io.on('connection',socket=>{
                 //console.log(data);
             })
              
-            socket.on('category',(selText)=>{
+            socket.on('category',(selText,tabId)=>{
                 console.log('hello');
                 var num=Math.floor((Math.random() * 2) + 1);
                 var ques=''+fs.readFileSync('./problems_db/'+selText+'/p'+num);
                 console.log
-                socket.to(roomId).emit('changeQues',ques);
-                io.to(roomId).emit('changeQues',ques);
+             //   socket.to(roomId).emit('changeQues',ques,tabId);
+                io.to(roomId).emit('changeQues',ques,tabId);
             })
            
 
@@ -101,6 +97,11 @@ io.on('connection',socket=>{
                // console.log(input);
                 socket.to(roomId).emit('inputChange',input)
                 
+            })
+            socket.on('add_ques_tab',function(){
+                console.log('here')
+              //  socket.to(roomId).emit('add_ques_tab_event');
+                io.to(roomId).emit('add_ques_tab_event');
             })
             socket.on('selectIndex',(language)=>{
                  socket.to(roomId).emit('selectIndex',language)

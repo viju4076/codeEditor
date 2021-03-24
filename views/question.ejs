@@ -1,46 +1,57 @@
-<div id="question">
-    <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#question">Task description</a></li>
+<!-- <div id="question"> -->
+    <!-- <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#question1">Task description</a></li>
+    </ul> -->
+    <div style="display: flex;">
+    
+    <ul class="nav nav-tabs nav-fill" id="ex1">
+        <li class="active">
+          <a
+            
+            id="ex1-tab-1"
+            data-toggle="tab"
+            href="#question1"
+            style="background-color: grey;"
+            ><span style="color: white;">Question-1</span> </a
+          >
+        </li>
     </ul>
-      
-        
-    
-    
-    <div class="tab-content">
-        <div  class="tab-pane fade in active">
-          
-            <div class="card question" >
-                
-                <div class="card-body">
-                    <div class="row" style="display: flex;">
-                    <h5 class="card-title">Question-1</h5>
-                    <div class="btn-group">
+    <%if (user==='Interviewer') { %>
+    <i class="fa fa-plus" style="align-self: center; color:white; margin-left: 8px;" title="Add Question Tab" id="add_tab"></i>
+    <% } %>
+    </div>
+    <div class="tab-content" id="questabs">
+        <div  class="tab-pane fade in active"  id="question1" >
+               <div class="row" style="display: flex; padding: 12px; margin-top: 12px;">
+                    <!-- <h5 class="card-title" style="font-weight: bold; color:white;">QUESTION</h5> -->
+                    <%if (user==='Interviewer') { %>
+                        <div style="width: 100%;" class="text-left">
+                    <div class="btn-group" >
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Categories <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                          <li><a href="#">Implementation</a></li>
-                          <li><a href="#">Dynamic Programming</a></li>
-                          <li><a href="#">Graphs</a></li>
+                          <li><a href="#" class="category">Implementation</a></li>
+                          <li><a href="#" class="category">Dynamic Programming</a></li>
+                          <li><a href="#" class="category">Graphs</a></li>
                         </ul>
                       </div>
+                    </div>
+                      <% } %>
                 </div>
-                    <p >
-                        <pre id="quesSec">
-                        <%=quesDes %>
+                <div>
+                    <p>
+                        <pre id="quesSec1">
+<%=quesDes %>
                         </pre>     
                     </p>
-                    
                   </div>
-              </div>
-
-          
         </div>
       
         
     </div>
         
-</div> 
+<!-- </div>  -->
 
 
     
