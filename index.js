@@ -70,6 +70,7 @@ var chats=[];
 io.on('connection',socket=>{
     
    
+<<<<<<< HEAD
          
     //console.log('hello');
     socket.on('join-room',(roomId,userId)=>{
@@ -81,6 +82,13 @@ io.on('connection',socket=>{
                 socket.to(roomId).broadcast.emit('user-disconnected',userId)
             })
             //console.log(user);
+=======
+   // console.log('hello');
+    socket.on('join-room',(roomId)=>{
+            console.log("room:"+roomId +"socket id: "+socket.id)
+            socket.join(roomId);
+            socket.to(roomId).emit('user-connected','userConnected');
+>>>>>>> cb251af0370b71e3734f11e4b81a571d3bd3626c
             
             socket.on('codeboard-message', function(data){
                 // console.log(data);
@@ -102,7 +110,11 @@ io.on('connection',socket=>{
              })
              
             socket.on('editor-change',(code)=>{
+<<<<<<< HEAD
                 
+=======
+               // console.log(code)
+>>>>>>> cb251af0370b71e3734f11e4b81a571d3bd3626c
                  socket.to(roomId).emit('editor-change',code)
             })
             socket.on('inputChange',(input)=>{
