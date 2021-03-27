@@ -11,7 +11,10 @@ var submit=document.getElementById('submit_button');
 var result=document.getElementById('resultBox');
 var details=document.getElementById('detailBox');
 var inputs=document.getElementById('inputBox');
-var categories_ques=document.getElementById('categories_ques');
+//var categories_ques=document.getElementById('categories_ques');
+
+var i=0;
+
 const boilerplate={
     cpp14:"#include<bits/stdc++.h>\nusing namespace std;\nint main()\n{\n    cout<<\"hello \\n\";\n}",
     cpp17:"#include<bits/stdc++.h>\nusing namespace std;\nint main()\n{\n    cout<<\"hello \\n\";\n}",
@@ -36,10 +39,6 @@ document.getElementById('language').click(function(event){
 
 //for showing question categories to interviewer only.
 
-if(USER==="Candidate")
-{
-  categories_ques.style.visibility="hidden";
-}
 
 function setLanguage(language)
 {
@@ -195,14 +194,14 @@ document.addEventListener('keyup', function(event) {
 }) 
 
 
-socket.emit('join-room',ROOM_ID)
+// socket.emit('join-room',ROOM_ID)
 
 
     
-socket.on('user-connected',msg=>{
-        transmitCode();
-        console.log("koi connect hua hai");
-    })
+// socket.on('user-connected',msg=>{
+//         transmitCode();
+//         console.log("koi connect hua hai");
+//     })
 
 socket.on('editor-change', code=>{
     editor.setValue(code.text);
@@ -231,7 +230,9 @@ socket.on('selectIndex',language=>{
   }
     
 });
-$(".dropdown-menu li a").click(function(){
+$(".dropdown-menu li a").on('click',function(){
+  var tabId=$(this).parents('div.tab-pane').attr('id');
+  console.log('i m here'+tabId);
   var selText = $(this).text();///User selected value...****
   swal("Want To Change Question", {
     buttons: {
@@ -243,8 +244,9 @@ $(".dropdown-menu li a").click(function(){
     switch (value) {
    
       case "Yes":
-        socket.emit('category',selText);
-  document.getElementById('quesSec').innerHTML="";
+        tabId='quesSec'+tabId[8];
+        socket.emit('category',selText,tabId);
+  document.getElementById(tabId).innerHTML="";
         break;
       default:
         break;
@@ -267,16 +269,88 @@ socket.on('codeResult',response=>{
  console.log(response);
 
 })
-socket.on('changeQues',ques=>{
+socket.on('changeQues',(ques,tabId)=>{
   console.log(ques);
-  document.getElementById('quesSec').innerText=ques;
+  document.getElementById(tabId).innerText=ques;
   $("pre").each(function(){
     $(this).html($(this).html().replace(/input/g,"<span class='green'>INPUT</span>"));
     $(this).html($(this).html().replace(/output/g,"<span class='red'>OUTPUT</span>"));
 });
 })
 
+$(document).ready(function() {
+    // var tabs = $("#container-1").tabs();
+    // var tabCounter = 1;
+    $("#questabs").on('click','.dropdown-menu li a',function(){
+      var tabId=$(this).parents('div.tab-pane').attr('id');
+      console.log('i m here'+tabId);
+      var selText = $(this).text();///User selected value...****
+      swal("Want To Change Question", {
+        buttons: {
+          cancel: "No",
+          Yes: true,
+        },
+      })
+      .then((value) => {
+        switch (value) {
+       
+          case "Yes":
+            tabId='quesSec'+tabId[8];
+            socket.emit('category',selText,tabId);
+      document.getElementById(tabId).innerHTML="";
+            break;
+          default:
+            break;
+        }
+      });
+      
+    });
+    $("pre").each(function(){
+      $(this).html($(this).html().replace(/input/g,"<span class='green'>INPUT</span>"));
+      $(this).html($(this).html().replace(/output/g,"<span class='red'>OUTPUT</span>"));
+  });
+    $('#add_tab').click( function(){
+       socket.emit('add_ques_tab');
+    });
+}); 
 
+socket.on('add_ques_tab_event',function(){
+  var current_idx = $("#ex1 li").length + 1;
+        console.log(current_idx);
+        $("#ex1").append("<li>"+
+        "<a "+
+          "id='ex1-tab-"+current_idx+"'"+
+          "data-toggle='tab'"+
+          "href='#question"+current_idx+"'"+
+          "style='background-color: grey;'"+
+          "><span style='color: white;'>Question-"+current_idx+"</span></a"+
+        ">"+
+      "</li>");
+      var str='';
+      if(user==="Interviewer")
+      str='<div style="width: 100%;" class="text-left">'+
+      '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+      'Categories <span class="caret"></span>'+
+      '</button>'+
+      '<ul class="dropdown-menu">'+
+                 '<li><a href="#">Implementation</a></li>'+
+                 '<li><a href="#">Dynamic Programming</a></li>'+
+                 '<li><a href="#">Graphs</a></li>'+
+               '</ul>'+
+             '</div>'
+      $("#questabs").append('<div  class="tab-pane fade"  id="question'+current_idx+'" >'+
+      '<div class="row" style="display: flex; padding: 12px; margin-top: 12px;">'+
+           str+
+       '</div>'+
+       '<div>'+
+           '<p>'+
+               '<pre id="quesSec'+current_idx+'">'+
+               'You can add a question here'+
+               '</pre>'+     
+           '</p>'+
+       '</div>'+
+'</div>')
+})
 function transmitCode(){
     console.log("called")
     socket.emit('editor-change',{text : editor.getValue()})
@@ -294,6 +368,7 @@ btn = document.getElementById('send')
 ;
 
 
+
 socket.on('message-from-others', function(data){
   
   var html = '<div class="message-box others-message-box">' +
@@ -305,6 +380,20 @@ socket.on('message-from-others', function(data){
   document.getElementById("message-area").innerHTML += html;
 })
 
+socket.on('previous_chats',data=>{
+  var html;
+  for(var i=0;i<data.length;i++)
+   { html = '<div class="message-box others-message-box">' +
+        '<div class="message others-message"> <strong>'+data[i].user+':</strong> ' + data[i].message + ' </div>' +
+        '<div class="separator"></div>' +
+      '</div>';
+      document.getElementById("message-area").innerHTML += html;
+
+    }
+      
+  
+
+})
 
 
 function sendMessage() {
@@ -327,11 +416,105 @@ function sendMessage() {
   }
 }
 
-
-
-
-//chat end
-
-
-
   
+//Video call section....................
+const videoGrid1= document.getElementById('video-grid1')
+const videoGrid2= document.getElementById('video-grid2')
+
+const peers={}
+// const myPeer= new Peer(undefined,{
+//     host: '/',
+//     port: '3001'
+// })
+
+var myPeer=new Peer();
+
+
+ const myVideo=document.createElement('video')
+ 
+ 
+ 
+  myVideo.muted=true
+navigator.mediaDevices.getUserMedia({
+         video:true,
+     audio:true
+   }).then(stream=>{
+    myVideo.setAttribute('id','myVideo');  //my video in my tab
+    //document.getElementById('myVideo').style.position='absolute';
+     addVideoStream(myVideo,stream,1)
+
+  myPeer.on('call',call=>{
+      call.answer(stream)
+     const video=document.createElement('video')
+     console.log(i);
+     var z='othersVideo'+i;
+     console.log(z);
+     video.id='othersVideo'; //my video in others tab
+    //  document.getElementById(z).style.position="absolute";
+    //  document.getElementById(z).style.left=i*20+"%";
+      
+     call.on('stream',userVideoStream=>{
+         addVideoStream(video,userVideoStream,2)
+     })
+
+  })
+
+  socket.on('user-connected',userId=>{
+     connectToNewUser(userId,stream)
+     transmitCode();
+    console.log('User-connected:'+userId)
+})
+
+})
+socket.on('user-disconnected',userId =>{
+    if(peers[userId])peers[userId].close()
+       
+ 
+
+})
+
+
+socket.on('change_i',(j)=>{
+  i=j;
+});
+
+myPeer.on('open',id=>{
+    socket.emit('join-room',ROOM_ID,id)
+
+})
+function connectToNewUser(userId,stream){
+    const call = myPeer.call(userId,stream)
+    const video=document.createElement('video')
+ //   video.setAttribute('id','othersVideo');
+ i+=1;
+ 
+ socket.emit('change_i',i);
+
+//  var z='othersVideo'+i;
+//  console.log(z);
+  video.id='othersVideo'; //others video in my tab
+//  document.getElementById(z).style.position="absolute";
+//  document.getElementById(z).style.left=i*20+"%";
+ 
+     
+    call.on('stream',userVideoStream=>{
+        addVideoStream(video,userVideoStream,2)
+    })
+    call.on('close',()=>{
+        video.remove()
+    })
+    peers[userId]=call
+}
+
+
+function addVideoStream(video,stream,c){
+
+    video.srcObject=stream
+    video.addEventListener('loadedmetadata',()=>{
+        video.play()
+    })
+    if(c==1)
+    videoGrid1.append(video)
+    else
+    videoGrid2.append(video);
+}

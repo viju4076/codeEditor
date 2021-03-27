@@ -11,6 +11,8 @@ body{
 
 }
 
+
+
 .question{
 
     
@@ -205,9 +207,74 @@ span.red{
 
 
   #chat{
-    position: absolute;
-   left: 15%;
-   top:50000%;
-    width: 80%;
+   
+    position: fixed;
+    left: 77%;
+   top:70%;
+    height: 95%;
+    width: 19%; 
+    z-index: 5000;
+  
+} 
+
+#question_card{
+    height: 10%;
+    overflow:scroll;
+}
+
+
+
+/* ................video section.............. */
+
+
+#video-grid1{
+    display: flex;
+    position: fixed;
     
+    left: 84%;
+    top:34%;
+    z-index: 5000;
+    display: grid;
+    /* grid-template-columns: repeat(auto-fill, 200px); */
+ /* grid-auto-rows: 100px; */
+}
+#video-grid2{
+    display: flex;
+    position:fixed;
+    left: 75%;
+    top:20%;
+    
+    display: grid;
+    flex-direction: column;
+    grid-template-columns: 4fr 4fr;
+    /* grid-template-rows: repeat(4, 3fr); */
+ /* grid-auto-rows: 100px; */
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-direction: column;
+  }
+#myVideo{
+    
+    
+    border-color:blue ;
+    border-width: 2px;
+    border-style: solid;
+    width: 30%;
+    height: 100%;
+    object-fit: cover; 
+   
+    
+}
+#othersVideo{
+    
+    border-color:black;
+    border-width: 2;
+    border-style: solid;
+    width: 120%;
+    height:110%;
+    object-fit: cover;
 } 
