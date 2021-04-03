@@ -1,0 +1,57 @@
+.accordion {
+    background-color:  rgba(5, 5, 5, 0.712);;
+    color:  white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+  }
+  
+  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+  .active, .accordion:hover {
+    background-color: #333;
+  }
+  
+  /* Style the accordion panel. Note: hidden by default */
+  .panel {
+    padding: 0 18px;
+    background-color: rgba(5, 5, 5, 0.712);;
+    display: none;
+    overflow: hidden;
+  }
+  #detail{
+      height: 60px;
+      width: 98%;
+  }
+  #score-pannel{
+    position: absolute;
+    left: 40px;
+    top:50px;
+     width: 300px;
+     height: 300px;
+  }
+  .detail{
+      background: rgba(5, 5, 5, 0.712);;
+    
+      color: white;
+      border: unset;
+        width: 100%;
+      padding: 2px;
+
+  }
+  #sumit{
+    
+        border: 0;
+        
+        background: rgba(5, 5, 5, 0.712);;
+        color: white;
+        padding: 8px;
+        margin: auto;
+
+        font-size: 18px;
+        
+       
+  }

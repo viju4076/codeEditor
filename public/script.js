@@ -272,6 +272,8 @@ socket.on('message-from-others', function(data){
 
 
 
+
+
 function sendMessage() {
   var message = document.getElementById("typing-box").value;
   if(message!="")
@@ -291,12 +293,60 @@ function sendMessage() {
     );
   }
 }
+message.addEventListener("keyup",function(event){
+  if(event.keyCode===13)
+  {
+    event.preventDefault();
+    btn.click();
+  }
+});
 
 
 
 
 //chat end
 
+//score section
+console.log(USER);
+if(USER=="Candidate")
+{
+ document.getElementById("score-pannel").style.display="none";
+}
+var acc = document.getElementsByClassName("accordion");
+var i;
 
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
 
+    /* Toggle between hiding and showing the active panel */
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
   
+ 
+}
+function generatePdf()
+{
+var detail_solving=document.getElementById('detail_solving').value;
+var detail_quality=document.getElementById('detail_quality').value;
+var detail_proficiency=document.getElementById('detail_proficiency').value;
+var detail_commnunication=document.getElementById('detail_commnunication').value;
+console.log(detail_solving);
+var doc=new jsPDF();
+doc.setFontSize(10);
+var text='PROBLEM SOLVING:-'+detail_solving+ '\n '+'CODE QUALITY:-'+detail_quality+'\n LANGUAGE PROFIENCIENCY:- '+detail_proficiency+'\n TECHNICAL COMMUNICATION:- '+detail_commnunication;
+
+//doc.text(detail_quality,20,20);
+//doc.text(detail_solving,20,20);
+//console.log(doc);
+doc.text(text,20,20);
+doc.save("output.pdf");
+}
+
