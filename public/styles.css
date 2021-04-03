@@ -1,12 +1,17 @@
+<<<<<<< HEAD
 * {
 	/*font-family: sans-serif;*/
+=======
+/* * {
+	font-family: sans-serif;
+>>>>>>> 97a56afb934a1d248146b6433fe7507cbdbed7a0
 	margin: 0;
 	padding: 0;
-}
+} */
 
 .header-area {
 	height: 6%;
-	background: rgba(5, 5, 5, 0.712);;
+	background: rgba(28, 3, 252, 0.699);;
 	box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.2), 0 0 1rem rgba(0, 0, 0, 0.2);
 	color: white;
 	padding: 4px;
@@ -74,6 +79,7 @@
 	float: right;
 	background: darkslategray;
 	color: white;
+
 }
 
 .others-message {

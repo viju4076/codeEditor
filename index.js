@@ -5,7 +5,10 @@ const io = require('socket.io')(server)
 const {v4:uuidV4} = require('uuid')
 var fs=require('fs')
 var request = require('request');
+const { captureRejectionSymbol } = require('events')
 var currentLanguage='cpp14';
+
+
 
 var program = {
     
@@ -53,46 +56,58 @@ app.get('/:room',(req,res)=>{
 })
 
 app.get('/:room/interviewer',(req,res)=>{
-    var ques=''+fs.readFileSync('./problems_db/implementation/p1');
+    var ques='You can add a question here'
     res.render('front',{roomId:req.params.room, user:'Interviewer',quesDes:ques});
 
 })
 app.get('/:room/candidate',(req,res)=>{
-    res.render('front',{roomId:req.params.room,user:'Candidate'})
+    var ques='Wait until interviewer assigns you a question';
+    res.render('front',{roomId:req.params.room,user:'Candidate',quesDes:ques})
 });
 
 
-
+var chats=[];
 io.on('connection',socket=>{
     
    
-
+   // console.log('hello');
     socket.on('join-room',(roomId)=>{
-        //  console.log("room:"+roomId +"socket id: "+socket.id)
+            console.log("room:"+roomId +"socket id: "+socket.id)
             socket.join(roomId);
             socket.to(roomId).emit('user-connected','userConnected');
-            // socket.on('disconnect',()=>{
-            //     socket.to(roomId).emit('user-disconnected',userid)
-            // });
-            //console.log(user);
             
             socket.on('codeboard-message', function(data){
                 // console.log(data);
+                chats.push(data);
                 socket.broadcast.to(roomId).emit('message-from-others', data);
-                //console.log(data);
+                //console.log(chats);
             })
              
-            
-           
-
+            socket.on('category',(selText,tabId)=>{
+                console.log('hello');
+                var num=Math.floor((Math.random() * 2) + 1);
+                var ques=''+fs.readFileSync('./problems_db/'+selText+'/p'+num);
+                console.log
+             //   socket.to(roomId).emit('changeQues',ques,tabId);
+                io.to(roomId).emit('changeQues',ques,tabId);
+            })
+             socket.on('change_i',(i)=>{
+                 socket.to(roomId).emit('change_i',i);
+             })
+             
             socket.on('editor-change',(code)=>{
-                //console.log(code)
+               // console.log(code)
                  socket.to(roomId).emit('editor-change',code)
             })
             socket.on('inputChange',(input)=>{
                // console.log(input);
                 socket.to(roomId).emit('inputChange',input)
                 
+            })
+            socket.on('add_ques_tab',function(){
+                console.log('here')
+              //  socket.to(roomId).emit('add_ques_tab_event');
+                io.to(roomId).emit('add_ques_tab_event');
             })
             socket.on('selectIndex',(language)=>{
                  socket.to(roomId).emit('selectIndex',language)
@@ -104,7 +119,8 @@ io.on('connection',socket=>{
             //     socket.to(roomId).emit('codeSubmit',msg)
             // })
             socket.on('submitCode',(input_code)=>{
-                console.log(input_code);
+              //  console.log(input_code);
+              console.log(input_code.code);
                 program.script=input_code.code;
                 program.language=currentLanguage;
                 program.stdin=input_code.input;
@@ -127,10 +143,10 @@ function (error, response, body) {
 
 
 
+
             })
     })
 })
-
 server.listen(8080) 
 
 

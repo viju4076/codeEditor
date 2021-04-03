@@ -65,7 +65,7 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#compiler">Compiler</a></li>
                 <li><a data-toggle="tab" href="#whiteboard">Whiteboard</a></li>
-                </ul>
+            </ul>
               
                 
             
@@ -83,9 +83,9 @@
                   
                 </div>
                 
-                  </div>
+             </div>
                 
-              </div> 
+          </div> 
 
 
 
@@ -93,7 +93,17 @@
         
     </div>
     <div class="col-sm-3" >
-      <%- include('chat.ejs') %>
+      <div id="video-grid">
+        <div id="video-grid1" >
+        </div>
+        <div id="video-grid2" >
+        </div>
+      
+      </div>
+      
+        <%- include('chat.ejs') %>
+     
+      
     </div>
      <div class="col-sm-3">
        <%- include('score.ejs') %>
