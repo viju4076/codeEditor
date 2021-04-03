@@ -4,6 +4,7 @@
    
 <button class="accordion">Code Quality</button>
 <div class="panel">
+    <%- include('rating.ejs',{variable: 'first'}) %>
     <textarea  class="detail" id="detail_quality" placeholder="Enter your feedback here"></textarea>
     
   
@@ -11,21 +12,27 @@
 
 <button class="accordion">Problem Solving </button>
 <div class="panel">
+    <%- include('rating.ejs',{variable: 'second'}) %>
+    
     <textarea  class="detail" id="detail_solving" placeholder="Enter your feedback here"></textarea>
     
 </div>
 
 <button class="accordion">Language Proficiency</button>
 <div class="panel">
+    <%- include('rating.ejs',{variable: 'third'}) %>
+    
     <textarea class="detail"  id="detail_proficiency" placeholder="Enter your feedback here"></textarea>
     
 </div>
 
 <button class="accordion">Technical Communication</button>
 <div class="panel">
+    <%- include('rating.ejs',{variable: 'fourth'}) %>
+    
     <textarea class="detail" id="detail_commnunication" placeholder="Enter your feedback here"></textarea>
    
 </div>
-<button id="submit" onclick="generatePdf()">Download</button>
 
+<button type="button" class="btn btn-primary"id="submit" onclick="generatePdf()">Download</button>
 </div>

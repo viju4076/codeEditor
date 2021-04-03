@@ -232,7 +232,7 @@ span.red{
     position: fixed;
     
     left: 84%;
-    top:34%;
+    top:10%;
     z-index: 5000;
     display: grid;
     /* grid-template-columns: repeat(auto-fill, 200px); */
