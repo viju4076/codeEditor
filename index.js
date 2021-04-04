@@ -70,7 +70,6 @@ var chats=[];
 io.on('connection',socket=>{
     
    
-<<<<<<< HEAD
          
     //console.log('hello');
     socket.on('join-room',(roomId,userId)=>{
@@ -82,14 +81,14 @@ io.on('connection',socket=>{
                 socket.to(roomId).broadcast.emit('user-disconnected',userId)
             })
             //console.log(user);
-=======
-   // console.log('hello');
-    socket.on('join-room',(roomId)=>{
-            console.log("room:"+roomId +"socket id: "+socket.id)
-            socket.join(roomId);
-            socket.to(roomId).emit('user-connected','userConnected');
->>>>>>> 7a464e84dcffa4146fad42142e034544d9efaea8
             
+            socket.on('othersVideoStatus',(status)=>{
+                socket.to(roomId).emit('othersVideoStatus',status);
+            })
+            socket.on('others_audio_status',(status)=>{
+                socket.to(roomId).emit('others_audio_status',status);
+                
+            })
             socket.on('codeboard-message', function(data){
                 // console.log(data);
                 chats.push(data);
@@ -110,11 +109,7 @@ io.on('connection',socket=>{
              })
              
             socket.on('editor-change',(code)=>{
-<<<<<<< HEAD
                 
-=======
-               // console.log(code)
->>>>>>> 7a464e84dcffa4146fad42142e034544d9efaea8
                  socket.to(roomId).emit('editor-change',code)
             })
             socket.on('inputChange',(input)=>{

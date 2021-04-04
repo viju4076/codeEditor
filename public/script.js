@@ -138,7 +138,10 @@ function navClick()
     document.getElementById('input_output').style.top='1200%';
     document.getElementById('close_button').style.visibility='hidden';
     document.getElementById('detailBox').style.visibility='hidden';
-    document.getElementById('inputBox').style.visibility='hidden';
+     document.getElementById('input_button').classList.remove('active');
+     document.getElementById('output_button').classList.remove('active');
+     document.getElementById('details_button').classList.remove('active');
+     document.getElementById('inputBox').style.visibility='hidden';
     document.getElementById('resultBox').style.visibility='hidden';
     
 
@@ -531,7 +534,7 @@ message.addEventListener("keyup",function(event){
 });
 
   
-//Video call section....................
+//......................................................Video call section....................
 const videoGrid1= document.getElementById('video-grid1')
 const videoGrid2= document.getElementById('video-grid2')
 
@@ -545,8 +548,72 @@ var myPeer=new Peer();
 
 
  const myVideo=document.createElement('video')
+ var my_video_visible=true;
+ var my_audio=true;
+
+ function camera()
+  {
+   if(my_video_visible==true)
+    {
+      myVideo.style.display="none";
+      document.getElementById('video_handler').src="/camera_off.png";  
+      document.getElementById('default_image').style.visibility="visible";
+   }
+   else
+   {
+    myVideo.style.display="block";
+    document.getElementById('video_handler').src="/camera_on.png";
+    document.getElementById('default_image').style.visibility="hidden";
+   }
+    my_video_visible=!my_video_visible;
+  
+    socket.emit('othersVideoStatus',my_video_visible);
+
+ }
  
- 
+ socket.on('othersVideoStatus',(status)=>{
+   if(status==true)
+   {
+     console.log(videoGrid2);
+     document.getElementById('othersVideo').video="true";
+     document.getElementById('default_image_other').style.visibility="hidden";
+   }
+   else
+   {
+     console.log(videoGrid2);
+     document.getElementById('othersVideo').video="false";
+     document.getElementById('default_image_other').style.visibility="visible";
+   }
+ })
+
+ function audio()
+ {
+   if(my_audio==true)
+   {
+    document.getElementById('audio_handler').src="/audio_off.png";  
+   }
+   else
+   {
+    document.getElementById('audio_handler').src="/audio_on.png";  
+   }
+    my_audio=!my_audio;
+    socket.emit('others_audio_status',my_audio);
+ }
+
+  socket.on('others_audio_status',(status)=>{
+    //console.log("aa rha hai");
+    if(status)
+    {
+      document.getElementById('othersVideo').muted=false;
+    
+    }
+    else
+    {
+      document.getElementById('othersVideo').muted=true;
+    
+    }
+  })
+
  
   myVideo.muted=true
 navigator.mediaDevices.getUserMedia({
@@ -584,7 +651,7 @@ navigator.mediaDevices.getUserMedia({
 })
 socket.on('user-disconnected',userId =>{
     if(peers[userId])peers[userId].close()
-       
+    document.getElementById('default_image_other').style.visibility="hidden";   
  
 
 })
