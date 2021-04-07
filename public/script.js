@@ -326,14 +326,15 @@ socket.on('add_ques_tab_event',function(){
           "id='ex1-tab-"+current_idx+"'"+
           "data-toggle='tab'"+
           "href='#question"+current_idx+"'"+
-          "style='background-color: grey;'"+
+          ""+
           "><span style='color: white;'>Question-"+current_idx+"</span></a"+
         ">"+
       "</li>");
       var str='';
       if(user==="Interviewer")
       str='<div style="width: 100%;" class="text-left">'+
-      '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+      '<div class="btn-group" >'+
+      '<button type="button" class="btn btn-primary dropdown-toggle" style="margin-left: 8px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
       'Categories <span class="caret"></span>'+
       '</button>'+
       '<ul class="dropdown-menu">'+
@@ -341,9 +342,10 @@ socket.on('add_ques_tab_event',function(){
                  '<li><a href="#">Dynamic Programming</a></li>'+
                  '<li><a href="#">Graphs</a></li>'+
                '</ul>'+
+             '</div>'+
              '</div>'
       $("#questabs").append('<div  class="tab-pane fade"  id="question'+current_idx+'" >'+
-      '<div class="row" style="display: flex; padding: 12px; margin-top: 12px;">'+
+      '<div class="row" style="display: flex; padding: 12px; background-color: #282829">'+
            str+
        '</div>'+
        '<div>'+

@@ -47,6 +47,8 @@ app.use(express.static(__dirname+"/public"));
 //     res.render('front',{roomId:req.params.room})
 // })
 
+var chats=[];
+var roomInfo=new Map();
 app.get('/',(req,res)=>{
     res.redirect(`/${uuidV4()}/interviewer`)
 })
@@ -56,20 +58,27 @@ app.get('/:room',(req,res)=>{
 })
 
 app.get('/:room/interviewer',(req,res)=>{
-    var ques='You can add a question here'
-    res.render('front',{roomId:req.params.room, user:'Interviewer',quesDes:ques});
+    console.log(roomInfo.get(req.params.room));
+    var questions=['Add a question here'];
+    if(roomInfo.has(req.params.room))
+     questions=roomInfo.get(req.params.room).questions;
+    res.render('front',{roomId:req.params.room, user:'Interviewer',quesDes:questions});
 
 })
 app.get('/:room/candidate',(req,res)=>{
-    var ques='Wait until interviewer assigns you a question';
-    res.render('front',{roomId:req.params.room,user:'Candidate',quesDes:ques})
+   // console.log('here'+questions);
+   var questions=['Add a question here'];
+   if(roomInfo.has(req.params.room))
+   questions=roomInfo.get(req.params.room).questions;
+    res.render('front',{roomId:req.params.room,user:'Candidate',quesDes:questions})
 });
 
 
-var chats=[];
 io.on('connection',socket=>{
     
    
+         
+
          
     //console.log('hello');
     socket.on('join-room',(roomId,userId)=>{
@@ -77,6 +86,8 @@ io.on('connection',socket=>{
             socket.join(roomId);
             socket.to(roomId).emit('user-connected',userId);
             io.to(socket.id).emit('previous_chats', chats);
+            if(io.sockets.adapter.rooms.get(roomId).size==1);
+            roomInfo.set(roomId,{counter:1,questions:['Add a Question here']});
             socket.on('disconnect',()=>{
                 socket.to(roomId).broadcast.emit('user-disconnected',userId)
             })
@@ -100,7 +111,22 @@ io.on('connection',socket=>{
                 console.log('hello');
                 var num=Math.floor((Math.random() * 2) + 1);
                 var ques=''+fs.readFileSync('./problems_db/'+selText+'/p'+num);
-                console.log
+                var tabnum=tabId[7]-'0';
+                var counter=roomInfo.get(roomId).counter;
+                var questions=roomInfo.get(roomId).questions;
+                if(tabnum<=counter)
+                {
+                    questions[tabnum-1]=ques;
+                }
+                else
+                {
+                    counter++;
+                    questions.push(ques);
+                }
+                roomInfo.set(roomId,{counter:counter,questions:questions});
+                console.log(tabnum)
+                console.log(counter);
+                console.log(questions);
              //   socket.to(roomId).emit('changeQues',ques,tabId);
                 io.to(roomId).emit('changeQues',ques,tabId);
             })
@@ -110,6 +136,7 @@ io.on('connection',socket=>{
              
             socket.on('editor-change',(code)=>{
                 
+               // console.log(code)
                  socket.to(roomId).emit('editor-change',code)
             })
             socket.on('inputChange',(input)=>{

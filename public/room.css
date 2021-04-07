@@ -20,6 +20,14 @@ body{
     height: 80%;
 }
 
+#ex1 a:hover{
+    background-color: black;
+}
+#ex1 .active a {
+
+    background-color: black !important;
+  
+  }
 
 #smallHeader{
      position: absolute;
