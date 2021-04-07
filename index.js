@@ -3,9 +3,12 @@ const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const {v4:uuidV4} = require('uuid')
+const bodyParser = require("body-parser")
 var fs=require('fs')
 var request = require('request');
 const { captureRejectionSymbol } = require('events')
+const { join } = require('path')
+
 var currentLanguage='cpp14';
 
 
@@ -38,6 +41,8 @@ app.set('view engine','ejs');
 //app.use("/public", express.static('public'));
 
 app.use(express.static(__dirname+"/public"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // app.get('/',(req,res)=>{
 //     res.redirect(`/${uuidV4()}`)
@@ -49,28 +54,74 @@ app.use(express.static(__dirname+"/public"));
 
 var chats=[];
 var roomInfo=new Map();
+
+// join ka pratical///////////
 app.get('/',(req,res)=>{
-    res.redirect(`/${uuidV4()}/interviewer`)
+    res.render('join',{roomId:uuidV4(),user : "NONE"});
 })
+//////////////////////////////
+
+
+let pwdMap = new Map();
+
+app.post('/createroom',(req,res)=>{
+   pwdMap.set(req.body.roomid,req.body.password);
+  // console.log(pwdMap);
+   res.end("room created successfully!!");
+})
+
+app.post('/joininterviewer',(req,res)=>{
+   
+  //  console.log(pwdMap.get(req.body.roomid));
+    if(!pwdMap.has(req.body.roomid))
+    res.end("no such room!!");
+    
+   else if(pwdMap.get(req.body.roomid).localeCompare(req.body.password)!=0)
+    res.end("incorrect password!!");
+
+    else res.end("ok"); 
+   
+ })
+
+ app.post('/joincandidate',(req,res)=>{
+   
+   // console.log(pwdMap.get(req.body.roomid));
+    if(!pwdMap.has(req.body.roomid))
+    res.end("no such room!!");
+
+    else res.end("ok"); 
+   
+ })
+
+ 
+
+// app.get('/',(req,res)=>{
+//     res.redirect(`/${uuidV4()}/interviewer`)
+// })
 
 app.get('/:room',(req,res)=>{
     res.redirect(`/${req.params.room}/candidate`);
 })
 
-app.get('/:room/interviewer',(req,res)=>{
+
+app.get('/:room/interviewer/:pwd/:name',(req,res)=>{
+    var ques='You can add a question here';
+    if(pwdMap.get(req.params.room).localeCompare(req.params.pwd)!=0)
+    res.redirect('/');
     console.log(roomInfo.get(req.params.room));
     var questions=['Add a question here'];
     if(roomInfo.has(req.params.room))
      questions=roomInfo.get(req.params.room).questions;
-    res.render('front',{roomId:req.params.room, user:'Interviewer',quesDes:questions});
+    res.render('front',{roomId:req.params.room, user:'Interviewer',quesDes:questions,name:req.params.name});
 
 })
-app.get('/:room/candidate',(req,res)=>{
-   // console.log('here'+questions);
-   var questions=['Add a question here'];
+
+
+app.get('/:room/candidate/:name',(req,res)=>{
+    var questions=['Add a question here'];
    if(roomInfo.has(req.params.room))
    questions=roomInfo.get(req.params.room).questions;
-    res.render('front',{roomId:req.params.room,user:'Candidate',quesDes:questions})
+    res.render('front',{roomId:req.params.room,user:'Candidate',quesDes:questions,name:req.params.name})
 });
 
 
@@ -179,6 +230,7 @@ function (error, response, body) {
    // result.textContent=body;
    io.to(roomId).emit('codeResult',body);
 });
+
 
 
 
