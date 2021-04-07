@@ -361,113 +361,25 @@ function transmitCode(){
 }
 
 
-/*******************************************************score section*****************************************************/
-let star1 = document.querySelectorAll('.first');
 
-let i1=0;
-for (i1 = 0; i1 < star1.length; i1++) {
-	star1[i1].addEventListener('click', function() {
-		i1 = this.value;
-    console.log(i1);
-		
-	});
-}
+/*****************************************Note Section****************/
 
-let star2 = document.querySelectorAll('.second');
-
-let i2=0;
-for (i2 = 0; i2 < star2.length; i2++) {
-	star2[i2].addEventListener('click1', function() {
-		i2 = this.value;
-    console.log(i2);
-		
-	});
-}
-
-let star3 = document.querySelectorAll('.third');
-
-let i3=0;
-for (i3 = 0; i3 < star3.length; i3++) {
-	star3[i3].addEventListener('click2', function() {
-		i3 = this.value;
-    console.log(i3);
-		
-	});
-}
-
-let star4 = document.querySelectorAll('.fourth');
-
-let i4=0;
-for (i4 = 0; i4< star4.length; i4++) {
-	star4[i4].addEventListener('click3', function() {
-		i4 = this.value;
-    console.log(i4);
-		
-	});
-}
-
-console.log(USER);
-if(USER=="Candidate")
+if(USER=="Interviewer")
 {
- document.getElementById("score-pannel").style.display="none";
+  document.getElementById("note-pannel").style.display="none";
 }
-var acc = document.getElementsByClassName("accordion");
-var i;
-
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    /* Toggle between adding and removing the "active" class,
-    to highlight the button that controls the panel */
-    this.classList.toggle("active");
-
-    /* Toggle between hiding and showing the active panel */
-    var panel = this.nextElementSibling;
-    if (panel.style.display === "block") {
-      panel.style.display = "none";
-    } else {
-      panel.style.display = "block";
-    }
-  });
-  
- 
-}
-function generatePdf()
+function generateNote()
 {
-var detail_solving=document.getElementById('detail_solving').value;
-var detail_quality=document.getElementById('detail_quality').value;
-var detail_proficiency=document.getElementById('detail_proficiency').value;
-var detail_commnunication=document.getElementById('detail_commnunication').value;
-console.log(detail_solving);
-var rate;
-var doc=new jsPDF();
-doc.setFontSize(14);
-var text0='PERFORMANCE REPORT';
-doc.text(text0,60,10);
-
-var text1='PROBLEM SOLVING:- '+detail_solving;
-doc.text(text1,20,30);
-rate=i2+' out of 5';
-doc.text(rate,150,35);
-var text2='CODE QUALITY:- '+detail_quality;
-doc.text(text2,20,50);
-rate=i1+' out of 5';
-doc.text(rate,150,55);
-var text3='LANGUAGE PROFIENCIENCY:- '+detail_proficiency;
-
-//console.log(doc);
-doc.text(text3,20,70);
-rate=i3+' out of 5';
-doc.text(rate,150,75);
-var text4='TECHNICAL COMMUNICATION:- '+detail_commnunication;
-doc.text(text4,20,90);
-rate=i4+' out of 5';
-doc.text(rate,150,95);
-doc.save("output.pdf");
+var notes=document.getElementById("note-area").value;
+var doc2=new jsPDF();
+doc2.setFontSize(14);
+doc2.text(notes,20,20);
+doc2.save("notes.pdf");
 }
 
-/****************************************************************score section end ************************************/
 
 
+/*************************Note section end********* */
 //chat section 
 
 var message = document.getElementById('typing-box'),
@@ -701,3 +613,5 @@ function addVideoStream(video,stream,c){
     else
     videoGrid2.append(video);
 }
+/****************************************Screen share************* */
+
