@@ -449,6 +449,10 @@ message.addEventListener("keyup",function(event){
 //......................................................Video call section....................
 const videoGrid1= document.getElementById('video-grid1')
 const videoGrid2= document.getElementById('video-grid2')
+var videoElement=document.getElementById("screen-video");
+
+
+
 
 const peers={}
 // const myPeer= new Peer(undefined,{
@@ -457,6 +461,7 @@ const peers={}
 // })
 
 var myPeer=new Peer();
+var myid;
 
 
  const myVideo=document.createElement('video')
@@ -574,9 +579,12 @@ socket.on('change_i',(j)=>{
 });
 
 myPeer.on('open',id=>{
+  myid=id;
     socket.emit('join-room',ROOM_ID,id)
+   // socket.emit('peerId',myid);
 
 })
+
 function connectToNewUser(userId,stream){
     const call = myPeer.call(userId,stream)
     const video=document.createElement('video')
@@ -598,6 +606,7 @@ function connectToNewUser(userId,stream){
     call.on('close',()=>{
         video.remove()
     })
+    
     peers[userId]=call
 }
 
@@ -615,3 +624,54 @@ function addVideoStream(video,stream,c){
 }
 /****************************************Screen share************* */
 
+
+
+const stop=document.getElementById("stop");
+const start=document.getElementById("start");
+          var displayMediaOptions={
+              video:{
+                  cursor:'always'
+              },
+              audio:false
+          }
+          start.addEventListener("click",function(e){
+            startCapture();
+        })
+        stop.addEventListener("click",function(e){
+            stopCapture();
+        },false)
+    
+        async function startCapture(){
+            try{
+             const stream=await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+               // 
+              //});
+               socket.emit('screen-share',{
+               // videoElement.srcObject
+                src : await navigator.mediaDevices.getDisplayMedia(displayMediaOptions),
+                user: user
+                 
+               });
+              // const call = myPeer.call(userId,stream);
+           
+            }catch(err){
+                console.error("Error"+err);
+            }
+        }
+        function stopCapture(e){
+          let tracks=videoElement.srcObject.getTracks();
+          tracks.forEach(track =>track.stop()) 
+           socket.emit('stop-share',{
+             src : null,
+             user :user
+           })
+              //videoElement.srcObject=null;
+             
+        }
+        
+        
+
+socket.on('others-stream',function(data){
+  videoElement.srcObject=data.src;
+   console.log("getting data");
+})

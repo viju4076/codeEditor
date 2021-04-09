@@ -8,6 +8,7 @@
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">CodeEditor</a>
+     
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="#" id='user'>
@@ -66,6 +67,7 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#compiler">Compiler</a></li>
                 <li><a data-toggle="tab" href="#whiteboard">Whiteboard</a></li>
+                <li><a data-toggle="tab" href="#screen-share">Screen-Share</a></li>
             </ul>
               
                 
@@ -73,7 +75,7 @@
             
             <div class="tab-content">
                 <div id="compiler" class="tab-pane fade in active">
-                  
+                 
                     <%- include('compiler.ejs') %>
                 
                 </div>
@@ -82,6 +84,9 @@
                     <%- include('whiteboard.ejs') %>
                 
                   
+                </div>
+                <div id="screen-share" class="tab-pane fade">
+                     <%-include('screen_share.ejs') %>
                 </div>
                 
              </div>

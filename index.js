@@ -139,6 +139,8 @@ io.on('connection',socket=>{
             socket.on('disconnect',()=>{
                 socket.to(roomId).broadcast.emit('user-disconnected',userId)
             })
+
+           
             //console.log(user);
             
             socket.on('othersVideoStatus',(status)=>{
@@ -153,6 +155,9 @@ io.on('connection',socket=>{
                 chats.push(data);
                 socket.broadcast.to(roomId).emit('message-from-others', data);
                 //console.log(chats);
+            })
+            socket.on('stream',function(data){
+                socket.broadcast.to(roomId).emit('others-stream',data);
             })
              
             socket.on('category',(selText,tabId)=>{
